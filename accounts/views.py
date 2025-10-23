@@ -23,6 +23,9 @@ def register_view(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Username already taken use different one.')
             return redirect('register')
+        
+        elif not email:
+            messages.error(request, 'Email is required!')
 
         elif User.objects.filter(email=email).exists():
             messages.error(request, 'Email already taken use different one.')

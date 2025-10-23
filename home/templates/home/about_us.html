@@ -1,0 +1,289 @@
+{% extends "main.html" %}
+
+{% block title %}About Us{% endblock title %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Navigation tabs for sections -->
+  <ul class="nav nav-tabs mb-4" id="aboutTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button">
+        About Us
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy" type="button">
+        Privacy Policy
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="terms-tab" data-bs-toggle="tab" data-bs-target="#terms" type="button">
+        Terms of Service
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab content -->
+  <div class="tab-content" id="aboutTabsContent">
+    
+    <!-- About Us Section -->
+    <div class="tab-pane fade show active" id="about" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h3 mb-4">About Streak Manager</h1>
+          
+          <h5 class="mt-4">Our Mission</h5>
+          <p>
+            Streak Manager helps you build and maintain positive habits through simple daily tracking. 
+            We believe consistency is the key to personal growth, and our goal is to make habit tracking 
+            effortless and motivating.
+          </p>
+
+          <h5 class="mt-4">What We Offer</h5>
+          <ul>
+            <li><strong>Simple Tracking:</strong> Mark daily tasks complete with one click</li>
+            <li><strong>Progress Visualization:</strong> See your current and longest streaks at a glance</li>
+            <li><strong>Goal Management:</strong> Set and track daily goals alongside your habits</li>
+            <li><strong>Privacy First:</strong> Your data belongs to you and is kept secure</li>
+          </ul>
+
+          <h5 class="mt-4">Who We Are</h5>
+          <p>
+            Streak Manager was built by a student developer passionate about productivity and habit formation. 
+            This project started as a personal tool to track coding habits and grew into a full-featured 
+            habit tracker designed to help anyone build consistency in their life.
+          </p>
+
+          <h5 class="mt-4">Our Values</h5>
+          <ul>
+            <li><strong>Simplicity:</strong> Clean, intuitive interface without unnecessary complexity</li>
+            <li><strong>Privacy:</strong> We collect only what's necessary and never sell your data</li>
+            <li><strong>Transparency:</strong> Open about how we operate and what we do with your information</li>
+            <li><strong>Continuous Improvement:</strong> Regular updates based on user feedback</li>
+          </ul>
+
+          <h5 class="mt-4">Contact Us</h5>
+          <p>
+            Have questions, suggestions, or feedback? We'd love to hear from you!<br>
+            Email: <a href="mailto:streakmanager@gmail.com">streakmanager@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Section -->
+    <div class="tab-pane fade" id="privacy" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h3 mb-4">Privacy Policy</h1>
+          <p class="text-muted">Last updated: October 22, 2025</p>
+
+          <h5 class="mt-4">Introduction</h5>
+          <p>
+            Your privacy is important to us. This Privacy Policy explains how Streak Manager collects, 
+            uses, and protects your personal information when you use our service.
+          </p>
+
+          <h5 class="mt-4">Information We Collect</h5>
+          <p><strong>Account Information:</strong></p>
+          <ul>
+            <li>Email address</li>
+            <li>Username</li>
+            <li>First and last name</li>
+            <li>Password (stored securely using encryption)</li>
+          </ul>
+          <p><strong>Usage Data:</strong></p>
+          <ul>
+            <li>Streak titles and descriptions you create</li>
+            <li>Daily goal entries</li>
+            <li>Completion dates and streak statistics</li>
+            <li>Account creation and last update timestamps</li>
+          </ul>
+
+          <h5 class="mt-4">How We Use Your Information</h5>
+          <ul>
+            <li><strong>Provide Services:</strong> To create and maintain your account, store your streaks and goals</li>
+            <li><strong>Authentication:</strong> To verify your identity and secure your account</li>
+            <li><strong>Communication:</strong> To send password reset emails and important service updates</li>
+            <li><strong>Improve Service:</strong> To understand how users interact with features and make improvements</li>
+          </ul>
+
+          <h5 class="mt-4">Data Storage and Security</h5>
+          <p>
+            We store your data securely using industry-standard practices:
+          </p>
+          <ul>
+            <li>Passwords are hashed using Django's secure password hashing (PBKDF2)</li>
+            <li>Data is stored in a protected database with access controls</li>
+            <li>Connections use HTTPS encryption in production</li>
+            <li>We do not store payment information (service is currently free)</li>
+          </ul>
+
+          <h5 class="mt-4">Third-Party Services</h5>
+          <p>We may use the following third-party services:</p>
+          <ul>
+            <li><strong>Hosting Provider:</strong> To host and serve the application</li>
+            <li><strong>Email Service:</strong> To send password reset and notification emails</li>
+          </ul>
+          <p>We do not sell or share your personal data with third parties for marketing purposes.</p>
+
+          <h5 class="mt-4">Your Rights</h5>
+          <p>You have the right to:</p>
+          <ul>
+            <li><strong>Access:</strong> View all data we have about you</li>
+            <li><strong>Edit:</strong> Update your account information at any time</li>
+            <li><strong>Delete:</strong> Request complete deletion of your account and all associated data</li>
+            <li><strong>Export:</strong> Request a copy of your data (feature coming soon)</li>
+          </ul>
+
+          <h5 class="mt-4">Data Retention</h5>
+          <p>
+            We retain your data as long as your account is active. If you delete your account, 
+            all personal information and associated streaks/goals are permanently removed from our systems.
+          </p>
+
+          <h5 class="mt-4">Cookies and Tracking</h5>
+          <p>
+            We use essential cookies to maintain your login session. We do not use tracking cookies 
+            or third-party analytics at this time.
+          </p>
+
+          <h5 class="mt-4">Changes to This Policy</h5>
+          <p>
+            We may update this Privacy Policy from time to time. We will notify users of significant 
+            changes via email or a notice on the website.
+          </p>
+
+          <h5 class="mt-4">Contact Us</h5>
+          <p>
+            For privacy-related questions or to exercise your rights, contact us at:<br>
+            Email: <a href="mailto:streakmanager@gmail.com">streakmanager@gmail.com</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Terms of Service Section -->
+    <div class="tab-pane fade" id="terms" role="tabpanel">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h3 mb-4">Terms of Service</h1>
+          <p class="text-muted">Last updated: October 22, 2025</p>
+
+          <h5 class="mt-4">Agreement to Terms</h5>
+          <p>
+            By accessing and using Streak Manager, you agree to be bound by these Terms of Service. 
+            If you do not agree to these terms, please do not use our service.
+          </p>
+
+          <h5 class="mt-4">Use of Service</h5>
+          <p><strong>Permitted Use:</strong></p>
+          <ul>
+            <li>Create an account and track your personal habits and goals</li>
+            <li>Use the service for personal, non-commercial purposes</li>
+            <li>Access your data from any device where you're logged in</li>
+          </ul>
+          <p><strong>Prohibited Use:</strong></p>
+          <ul>
+            <li>Share your account credentials with others</li>
+            <li>Attempt to hack, reverse engineer, or exploit the service</li>
+            <li>Use automated scripts or bots to interact with the service</li>
+            <li>Post illegal, harmful, or offensive content</li>
+            <li>Violate any applicable laws or regulations</li>
+          </ul>
+
+          <h5 class="mt-4">Account Responsibilities</h5>
+          <ul>
+            <li>You are responsible for maintaining the confidentiality of your password</li>
+            <li>You must provide accurate and complete registration information</li>
+            <li>You are responsible for all activities that occur under your account</li>
+            <li>Notify us immediately of any unauthorized use of your account</li>
+          </ul>
+
+          <h5 class="mt-4">Service Availability</h5>
+          <p>
+            We strive to keep Streak Manager available 24/7, but we do not guarantee uninterrupted access. 
+            The service is provided "as is" without warranties of any kind. We may temporarily suspend 
+            access for maintenance or updates.
+          </p>
+
+          <h5 class="mt-4">Data and Backups</h5>
+          <p>
+            While we take reasonable measures to protect your data, we are not liable for data loss 
+            due to technical failures, security breaches, or other unforeseen events. We recommend 
+            keeping your own records of important information.
+          </p>
+
+          <h5 class="mt-4">Intellectual Property</h5>
+          <ul>
+            <li>You retain ownership of the content you create (streaks, goals, notes)</li>
+            <li>We retain ownership of the Streak Manager code, design, and branding</li>
+            <li>You grant us a license to store and display your content as necessary to provide the service</li>
+          </ul>
+
+          <h5 class="mt-4">Termination</h5>
+          <p>
+            We reserve the right to suspend or terminate your account if you violate these Terms of Service. 
+            You may delete your account at any time through the account settings page. Upon termination, 
+            your data will be permanently deleted.
+          </p>
+
+          <h5 class="mt-4">Limitation of Liability</h5>
+          <p>
+            To the maximum extent permitted by law, Streak Manager and its creators shall not be liable 
+            for any indirect, incidental, special, or consequential damages arising from your use of the service, 
+            including but not limited to data loss, service interruptions, or failure to achieve habits or goals.
+          </p>
+
+          <h5 class="mt-4">Indemnification</h5>
+          <p>
+            You agree to indemnify and hold harmless Streak Manager from any claims, damages, or expenses 
+            arising from your violation of these terms or misuse of the service.
+          </p>
+
+          <h5 class="mt-4">Modifications to Service</h5>
+          <p>
+            We reserve the right to modify, suspend, or discontinue any part of the service at any time 
+            with or without notice. We will make reasonable efforts to notify users of significant changes.
+          </p>
+
+          <h5 class="mt-4">Changes to Terms</h5>
+          <p>
+            We may update these Terms of Service from time to time. Continued use of the service after 
+            changes constitutes acceptance of the new terms. We will notify users of material changes 
+            via email or website notice.
+          </p>
+
+          <h5 class="mt-4">Governing Law</h5>
+          <p>
+            These Terms shall be governed by and construed in accordance with the laws of India, 
+            without regard to its conflict of law provisions.
+          </p>
+
+          <h5 class="mt-4">Dispute Resolution</h5>
+          <p>
+            Any disputes arising from these Terms or use of the service shall be resolved through 
+            good faith negotiation. If negotiation fails, disputes shall be subject to the exclusive 
+            jurisdiction of the courts in [Your City/State].
+          </p>
+
+          <h5 class="mt-4">Contact Information</h5>
+          <p>
+            For questions about these Terms of Service, contact us at:<br>
+            Email:  <a href="mailto:streakmanager@gmail.com">streakmanager@gmail.com</a>
+          </p>
+
+          <h5 class="mt-4">Severability</h5>
+          <p>
+            If any provision of these Terms is found to be unenforceable, the remaining provisions 
+            will continue in full force and effect.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

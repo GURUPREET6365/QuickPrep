@@ -1,0 +1,13 @@
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+    {{ form.title }}
+    {{ form.title.errors }}
+
+    <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+    {{ form.description }}
+    {{ form.description.errors }}
+    <button type="submit">Submit</button>
+</form>
+{% comment %} {{ form.as_p }} {% endcomment %}

@@ -81,7 +81,7 @@ def streak_update(request, pk):
             streak_id.last_completed = today
             streak_id.save()
 
-        return redirect('show_streaks')
+        return redirect('show_streaks', {'last_completed':last_completed, 'two_days_before':two_days_before,})
 
 
 @login_required

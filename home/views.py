@@ -44,7 +44,7 @@ def about_us(request):
 
 @login_required
 def ultimategoal(request):
-    updated_date = timezone.localdate()
+    updated_date = timezone.now()
     if request.method == 'POST':
         title = request.POST.get('title')
         

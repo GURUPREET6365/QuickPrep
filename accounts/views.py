@@ -37,8 +37,10 @@ def register_view(request):
                                         first_name=first_name,
                                         last_name=last_name)
         user.save()
-        messages.success(request, 'Registration successful. Please log in.')
-        return redirect('login')
+        messages.success(request, 'Registration successful')
+        login(request, user)
+        return redirect('home')
+
     else:
         return render(request, 'accounts/register.html')
 
@@ -55,7 +57,7 @@ def login_view(request):
                             password=password)
         if user is not None:
             #login(request, user): This function, also from django.contrib.auth, is crucial for establishing the user's session. It takes the request object and the authenticated user object as arguments. Its primary role is to set up the user's session in Django's authentication system, marking them as logged in. This includes storing the user's ID in the session, which allows Django to recognize the user on subsequent requests.
-
+            messages.success(request, 'Logged in successful')
             login(request, user)
             return redirect('home')
         else:
@@ -82,3 +84,17 @@ def delete_view(request):
         return redirect('home')
     else:
         return render(request, 'accounts/delete.html')
+
+@login_required
+def profile(request):
+    # user_id = User.objects.filter(user_id=request.user)
+    # The request.user object already contains the logged-in user's data
+    current_user = request.user
+
+    user={'username':current_user.username,
+            'f_name':current_user.first_name,
+            'l_name':current_user.last_name,
+            'email':current_user.email,                 
+        }
+    
+    return render(request, 'accounts/profile.html', {'user':user,})

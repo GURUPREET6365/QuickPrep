@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 from daily_goals.models import UsersGoals
 from .models import ultimateGoal
 from django.contrib import messages
+from datetime import timedelta
 from .forms import UltimateGoalForm
 
 # Create your views here.
-@login_required
 def home(request):
     #  it creates a queryset limited to rows where the Streak.user foreign key equals the current request.user only.  It is equivalent to “SELECT … FROM streaks WHERE user_id = current_user_id”
     # streaks = Streak.objects.filter(user=request.user) request.user represents an AnonymousUser object. This object does not have a primary key (pk) or id attribute, as it doesn't correspond to a specific user in the database.
@@ -21,9 +21,12 @@ def home(request):
 
     today = timezone.localdate() 
     incomplete_goal = []
+        # below are the two boolean checkng statement that check and return true or false.
     goals = UsersGoals.objects.filter(user_id=request.user.id)
     for i_goal in goals:
-        if not i_goal.completed:  # Checks if the goal is not completed (i.e., goal.completed is False)
+        created_date = timezone.localdate(i_goal.created_at)
+        deadline_date = created_date + timedelta(days=1)
+        if not i_goal.completed and (today <= deadline_date):  # Checks if the goal is not completed (i.e., goal.completed is False)
             incomplete_goal.append(i_goal) 
 
 
@@ -45,15 +48,30 @@ def ultimategoal(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         
-        ultgoal = ultimateGoal.objects.create(
-            user = request.user,
-            title=title, 
-            updated_at = updated_date
+        ultgoal, created = ultimateGoal.objects.update_or_create(
+            user=request.user,
+            defaults={'title': title, 'updated_at': updated_date}
         )
-        messages.info(request, 'The ultimate goal has been created.')
-    return render(request, 'home/ultimategoal.html')
+        if created:
+            messages.success(request, 'The ultimate goal has been created.')
+        else:
+            messages.success(request, 'Your ultimate goal has been updated.')
+       
+        return redirect('home')
+      # For a GET request, we still need to retrieve the existing goal
+    # to display it in the template.
+    try:
+        existing_goal = ultimateGoal.objects.get(user=request.user)
+    except ultimateGoal.DoesNotExist:
+        existing_goal = None
+    
+    context = {
+        'existing_goal': existing_goal
+    }
+    return render(request, 'home/ultimategoal.html', context)
 
 
+@login_required
 def edit_ultimate_goal(request):
     goal = ultimateGoal.objects.get(user=request.user)  # 👈 fetch via OneToOne
 
@@ -68,3 +86,13 @@ def edit_ultimate_goal(request):
         form = UltimateGoalForm(instance=goal)  # 👈 prefill form
 
     return render(request, 'home/editultimategoal.html', {'form': form})
+
+
+def deleteultimategoal(request):
+    goal = ultimateGoal.objects.get(user=request.user)
+    if request.method == 'POST':
+        goal.delete()
+        messages.info(request,'Goal has been deleted.')
+        return redirect('home')
+    
+    return redirect('home')

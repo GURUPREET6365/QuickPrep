@@ -28,11 +28,11 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-# CSRF_TRUSTED_ORIGINS = ["https://unvigilantly-unvacillating-candance.ngrok-free.dev"]
+CSRF_TRUSTED_ORIGINS = ["https://unvigilantly-unvacillating-candance.ngrok-free.dev"]
 
 
 # 'localhost', '127.0.0.1', 'unvigilantly-unvacillating-candance.ngrok-free.dev'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'unvigilantly-unvacillating-candance.ngrok-free.dev']
 
 
 # Application definition
@@ -106,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,  # You can customize this
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -114,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization

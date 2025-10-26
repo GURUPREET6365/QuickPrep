@@ -23,18 +23,18 @@
     <div class="card border-0 shadow-sm rounded-3">
       <div class="card-body py-4 text-center">
         <h5 class="card-title text-uppercase text-secondary mb-2">Ultimate Goal
-                     <a href="{% url 'editultimategoal' %}" class="btn btn-sm btn-outline-primary">
+          <!-- Edit Button / Pen Icon -->
+        {% if ultimate_goal %}
+          <a href="{% url 'editultimategoal' %}" class="btn btn-sm btn-outline-primary">
             <i class="bi bi-pencil-fill"></i>
           </a></h5>
         <h2 class="card-text text-primary">
-          {% if ultimate_goal %}
             {% for i_ultimate in ult_goal_list%}
             <p>{{i_ultimate.title|upper}}</p>
-                      <!-- Edit Button / Pen Icon -->
               {% endfor %}
               
           {% else %}
-          
+          <br>
             <p>You have no any ultimate goal. <br> 
               
               <a href="{% url 'ultimategoal'%}" class="btn btn-outline-secondary">
@@ -57,9 +57,11 @@
       <h2 class="mb-0">
         <i class="bi bi-fire text-danger"></i> Your Streaks
       </h2>
-      <a href="{% url 'show_streaks' %}" class="btn btn-outline-primary">
+
+      <a href="{% url 'show_streaks'%}" class="btn btn-outline-primary">
         <i class="bi bi-list-ul"></i> View All
       </a>
+
     </div>
 
     <!-- Check for incomplete streaks first -->
@@ -123,6 +125,7 @@
         </a>
       </div>
     {% endif %}
+<hr>
 <hr>
     <!-- Your Daily Goals Section -->
     <div class="d-flex justify-content-between align-items-center mb-4">

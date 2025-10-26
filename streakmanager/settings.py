@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
+
 load_dotenv()
 
 
@@ -26,13 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
-
-CSRF_TRUSTED_ORIGINS = ["https://unvigilantly-unvacillating-candance.ngrok-free.dev"]
+DEBUG = os.getenv("DEBUG", "False").lower() in ("1","true","t")
 
 
-# 'localhost', '127.0.0.1', 'unvigilantly-unvacillating-candance.ngrok-free.dev'
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'unvigilantly-unvacillating-candance.ngrok-free.dev']
+
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost 127.0.0.1').split(' ')
 
 
 # Application definition
@@ -85,16 +86,11 @@ WSGI_APPLICATION = 'streakmanager.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('ENGINE_DB'),
-        'NAME': os.getenv('NAME_DB'),
-        'USER': os.getenv('USER_DB'),
-        'PASSWORD': os.getenv('PASSWORD_DB'),
-        'HOST': os.getenv('HOST_DB'),
-        'PORT': os.getenv('PORT_DB'),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        conn_max_age=600
+    )
 }
-
 
 
 # Password validation

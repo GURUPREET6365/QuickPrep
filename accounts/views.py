@@ -94,7 +94,9 @@ def profile(request):
     user={'username':current_user.username,
             'f_name':current_user.first_name,
             'l_name':current_user.last_name,
-            'email':current_user.email,                 
+            'email':current_user.email,       
+            'l_login':current_user.last_login,
+            'date_joined':current_user.date_joined,          
         }
     
     return render(request, 'accounts/profile.html', {'user':user,})

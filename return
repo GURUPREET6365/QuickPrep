@@ -1,0 +1,113 @@
+[33mcommit 65e2f66f33ac277ab6160de20c825553ae0f2a0f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Tue Oct 28 01:02:48 2025 +0530
+
+    improved css and design
+
+[33mcommit e7d68457b390011ee68d085a3caccb447c22c5ff[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Tue Oct 28 00:39:48 2025 +0530
+
+    improved profile UI
+
+[33mcommit b6556234b4c7af6e628dd62d639e2395bbc9729c[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Tue Oct 28 00:29:09 2025 +0530
+
+    improved bug
+
+[33mcommit 386fbb5c24eaf01d0c2a4d5c2e76002d17b7a62d[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Tue Oct 28 00:24:50 2025 +0530
+
+    added dark mode toggle button
+
+[33mcommit b1f2685393c93184a7e9db0c59f3afc6ee5d2554[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Mon Oct 27 20:21:08 2025 +0530
+
+    created superuser
+
+[33mcommit 84f5c20d2e7d7d5680f7a6f5fc03f288e5be76c8[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 22:07:56 2025 +0530
+
+    Changed mail id
+
+[33mcommit 165526f4442a4ac613dbd2a7671b7cc0386f5a46[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 22:02:02 2025 +0530
+
+    improved ultimate goal updated_time
+
+[33mcommit 43d5d03d62080f63cc7a593a9cead75e40a30310[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 14:39:41 2025 +0530
+
+    added static files
+
+[33mcommit 142ce1a8bc7fff6f5cac49bd589fb4ce6df648bc[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 14:34:31 2025 +0530
+
+    Fix psycopg2 version
+
+[33mcommit 3c76ebbafe5cab2e05764b6c271e4f6377f7dc25[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 14:30:40 2025 +0530
+
+    updated requirements.txt
+
+[33mcommit 3daa9ceb1c334fdf840f30f39a945fa98a4ff97d[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 14:27:43 2025 +0530
+
+    updated requirements.txt
+
+[33mcommit 834b1b80b58ec2ce82fd51a876ec928f9f7298e8[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 14:19:44 2025 +0530
+
+    added build.sh
+
+[33mcommit fc7a12379e12cc46eadc8da77a02638323c73e92[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 13:29:22 2025 +0530
+
+    preparing for hosting
+
+[33mcommit 2a60ca8994ef857ca932e23147b36053af9c4709[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Sun Oct 26 13:12:34 2025 +0530
+
+    Trying to add change password feature
+
+[33mcommit 057d65ae3e7e18e197902a28da3ca4deb8010698[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Fri Oct 24 23:34:53 2025 +0530
+
+    Added features Ultimate goal
+
+[33mcommit de9f183f630879e622ae771ecd66d41a218b2c3d[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Thu Oct 23 22:01:26 2025 +0530
+
+    Logic for email required
+
+[33mcommit 45aa26ff230c3a7af1e61ca702fa3e7e5e247d17[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Thu Oct 23 21:34:08 2025 +0530
+
+    Added delete account feature
+
+[33mcommit 239a571e9d0c6b42bde372473edf8aa787684887[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Thu Oct 23 21:05:55 2025 +0530
+
+    Edited Settings file for security
+
+[33mcommit 198d889074d39be453772cc0b2ece06d2ceb7606[m
+Author: GURUPREET6365 <kumargurupreet2008@gmail.com>
+Date:   Thu Oct 23 20:58:01 2025 +0530
+
+    Initial commit - Streak Manager project

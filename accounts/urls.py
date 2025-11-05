@@ -18,5 +18,6 @@ urlpatterns = [
     path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(
         template_name='accounts/profile.html'
     ), name='password_change_done'),
-    path('profile/', views.profile, name='profile')
+    path('profile/', views.profile, name='profile'),
+    path('verify-email/<str:uidb64>/<str:token>/', views.verify_email_view, name='verify_email')
 ]

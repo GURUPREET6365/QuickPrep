@@ -23,6 +23,6 @@ urlpatterns = [
     path('', include('streaks.urls')),
     path('', include('accounts.urls')),
     path('', include('home.urls')),
-    path('', include('daily_goals.urls'))
+    path('', include('daily_goals.urls')),
 
 ]

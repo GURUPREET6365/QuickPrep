@@ -15,11 +15,12 @@ import os
 from pathlib import Path
 
 
-from dotenv import load_dotenv
 import dj_database_url
 
-load_dotenv()
+from dotenv import load_dotenv, find_dotenv
 
+# Load .env file - THIS MUST BE FIRST
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -94,7 +95,7 @@ WSGI_APPLICATION = 'streakmanager.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=600
     )
 }
@@ -143,3 +144,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# settings.py
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER='streakmanager001@gmail.com'
+DEFAULT_FROM_EMAIL='streakmanager001@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # Generate this from Google Account Security settings)
+
+# Token expiration time (in seconds) — default is 3 days (259200 seconds)
+PASSWORD_RESET_TIMEOUT=259200

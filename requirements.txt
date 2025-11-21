@@ -4,3 +4,6 @@ dj-database-url==3.0.1
 psycopg2-binary==2.9.10
 python-dotenv==1.1.1
 whitenoise==6.9.0
+
+cloudinary==1.39.0
+django-cloudinary-storage==0.3.0

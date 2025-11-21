@@ -127,7 +127,7 @@ def upload_file(request, folder_id=None):
             mime_type=files.content_type,  # Get MIME type
         )
             if exists_file.exists():
-                messages.info(request, f"{exists_file.first().name}")
+                messages.info(request, f"{exists_file.first().name} is already exists.")
                 if folder_id:
                     return redirect('folder_list', folder_id=folder_id)
                 else:
@@ -167,8 +167,10 @@ def delete_folder(request, folder_id):
 
         folder.delete()
         if parent_id:
+            messages.success(request, f'{folder.name} has been deleted.')
             return redirect('folder_list', folder_id=parent_id)
         else:
+            messages.success(request, f'{folder.name} has been deleted.')
             return redirect('folder_list') 
         
 @login_required
@@ -199,6 +201,8 @@ def delete_file(request, file_id):
         file.delete()
         
         if folder_id:
+            messages.success(request, f'{file.name} has been deleted.')
             return redirect('folder_list', folder_id = folder_id)
         else:
+            messages.success(request, f'{file.name} has been deleted.')
             return redirect('folder_list')

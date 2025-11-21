@@ -5,13 +5,14 @@
 {% block extra_css %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/notes.css' %}">
+
 {% endblock extra_css %}
 
 {% block content %}
 
 <!-- Messages -->
 {% if messages %}
-<div class="container-fluid px-3 px-md-4 mt-3">
+<div class="notes-container" style="margin-top: 1rem;">
   {% for message in messages %}
   <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
     {{ message }}
@@ -22,56 +23,85 @@
 {% endif %}
 
 <!-- Header Section -->
-<header class="notes-header">
-  <div class="container-fluid px-3 px-md-4">
+<header style="padding: clamp(1rem, 3vw, 1.5rem) 0; border-bottom: 1px solid rgba(56,189,248,0.1); background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;">
+  <div class="notes-container">
     
     <!-- Top Bar: Title + Action Buttons -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-3">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-3">
       
-      <!-- Page Title -->
-      <h1 class="page-title">
-        <i class="bi bi-folder2-open"></i>
-        My Notes
-      </h1>
+      <!-- Left: Title -->
+      <div>
+        <h1 style="font-size: clamp(1.25rem, 4vw, 1.75rem); 
+                   font-weight: 600; 
+                   color: #cbd5e1; 
+                   margin: 0;
+                   display: flex;
+                   align-items: center;
+                   line-height: 1.2;">
+          <i class="bi bi-folder2-open me-2" style="color: #38bdf8; font-size: clamp(1.25rem, 4vw, 1.5rem);"></i>
+          My Notes
+        </h1>
+      </div>
 
-      <!-- Action Buttons -->
-      <div class="action-buttons">
+      <!-- Right: Action Buttons -->
+      <div class="header-actions d-flex gap-2 flex-wrap">
         <button type="button" 
-                class="btn btn-custom btn-outline-custom" 
+                class="btn btn-sm" 
+                style="background: rgba(56,189,248,0.1); 
+                       border: 1px solid #38bdf8; 
+                       color: #38bdf8; 
+                       padding: 0.5rem 1rem;
+                       font-weight: 500;
+                       white-space: nowrap;
+                       border-radius: 8px;
+                       transition: all 0.2s ease;" 
                 data-bs-toggle="modal" 
-                data-bs-target="#createFolderModal">
-          <i class="bi bi-folder-plus"></i>
-          <span>New Folder</span>
+                data-bs-target="#createFolderModal"
+                onmouseover="this.style.background='rgba(56,189,248,0.2)'"
+                onmouseout="this.style.background='rgba(56,189,248,0.1)'">
+          <i class="bi bi-folder-plus me-1"></i> New Folder
         </button>
 
         <button type="button" 
-                class="btn btn-custom btn-info-custom" 
+                class="btn btn-sm btn-info-custom" 
+                style="padding: 0.5rem 1rem; 
+                       font-weight: 500;
+                       white-space: nowrap;
+                       border-radius: 8px;"
                 onclick="document.getElementById('fileInput').click()">
-          <i class="bi bi-cloud-upload"></i>
-          <span>Upload Files</span>
+          <i class="bi bi-cloud-upload me-1"></i> Upload
         </button>
       </div>
     </div>
 
     <!-- Breadcrumb Navigation -->
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
+      <ol class="breadcrumb mb-0" 
+          style="background: transparent; 
+                 padding: 0.5rem 0 0 0; 
+                 flex-wrap: wrap;">
         <li class="breadcrumb-item">
-          <a href="{% url 'folder_list' %}">
+          <a href="{% url 'folder_list' %}" 
+             style="color: #38bdf8; text-decoration: none; transition: color 0.2s ease;"
+             onmouseover="this.style.color='#7dd3fc'"
+             onmouseout="this.style.color='#38bdf8'">
             <i class="bi bi-house-door me-1"></i>My Drive
           </a>
         </li>
 
         {% for folder in breadcrumbs %}
         <li class="breadcrumb-item">
-          <a href="{% url 'folder_list' folder.id %}">
+          <a href="{% url 'folder_list' folder.id %}" 
+             style="color: #38bdf8; text-decoration: none; transition: color 0.2s ease;"
+             onmouseover="this.style.color='#7dd3fc'"
+             onmouseout="this.style.color='#38bdf8'">
             {{ folder.name }}
           </a>
         </li>
         {% endfor %}
 
         {% if current_folder %}
-        <li class="breadcrumb-item active">
+        <li class="breadcrumb-item active" style="color: #cbd5e1;">
           {{ current_folder.name }}
         </li>
         {% endif %}
@@ -81,16 +111,345 @@
   </div>
 </header>
 
-<!-- Main Content -->
-<main>
-  <div class="container-fluid px-3 px-md-4">
+<!-- Main Content Area -->
+<section style="padding: clamp(1.5rem, 4vw, 2rem) 0;">
+  <div class="notes-container">
 
-    <!-- Drag & Drop Zone -->
-    <div id="dropZone" class="drop-zone" onclick="document.getElementById('fileInput').click()">
-      <i class="bi bi-cloud-arrow-up drop-zone-icon"></i>
-      <h5 class="drop-zone-title">Drag & Drop files here</h5>
-      <p class="drop-zone-text">or click to browse • PDF, JPG, JPEG, PNG • Max 20MB each</p>
+    <!-- Folders Section -->
+    {% if folders %}
+    <div class="mb-5">
       
+      <!-- Section Header -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 style="color: #94a3b8; 
+                   font-weight: 500; 
+                   font-size: clamp(0.875rem, 2vw, 1rem);
+                   text-transform: uppercase;
+                   letter-spacing: 0.05em;
+                   margin: 0;">
+          Folders
+        </h2>
+        <span style="color: #64748b; font-size: clamp(0.75rem, 2vw, 0.875rem);">
+          {{ folders|length }} folder{{ folders|length|pluralize }}
+        </span>
+      </div>
+
+      <!-- Folders Grid -->
+      <div class="row g-3 notes-grid">
+        {% for folder in folders %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+          <div class="folder-card h-100"
+               style="border: 1px solid rgba(56,189,248,0.12); 
+                      border-radius: 12px;
+                      padding: 1rem;
+                      position: relative;
+                      background: rgba(56,189,248,0.03);
+                      cursor: pointer;"
+               onmouseover="this.style.borderColor='rgba(56,189,248,0.3)'; 
+                           this.style.background='rgba(56,189,248,0.08)';"
+               onmouseout="this.style.borderColor='rgba(56,189,248,0.12)'; 
+                          this.style.background='rgba(56,189,248,0.03)';">
+
+            <a href="{% url 'folder_list' folder.id %}" 
+               style="text-decoration: none; 
+                      color: inherit; 
+                      display: block;">
+
+              <!-- Folder Icon + Name -->
+              <div class="d-flex align-items-start mb-2">
+                <i class="bi bi-folder-fill me-2" 
+                   style="font-size: clamp(1.25rem, 3vw, 1.5rem); 
+                          color: #38bdf8;
+                          flex-shrink: 0;"></i>
+                
+                <h3 style="color: #cbd5e1; 
+                          font-weight: 500; 
+                          font-size: clamp(0.875rem, 2vw, 0.9375rem);
+                          line-height: 1.4;
+                          margin: 0;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          display: -webkit-box;
+                          
+                          -webkit-box-orient: vertical;
+                          word-break: break-word;"
+                   title="{{ folder.name }}">
+                  {{ folder.name }}
+                </h3>
+              </div>
+
+              <!-- Date -->
+              <small style="color: #64748b; 
+                           font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+                           display: block;">
+                {{ folder.created_at|date:"M d, Y" }}
+              </small>
+
+            </a>
+
+            <!-- Three Dot Menu -->
+            <div class="dropdown" 
+                 style="position: absolute; 
+                        top: 0.5rem; 
+                        right: 0.5rem; 
+                        z-index: 10;">
+              <button class="btn btn-sm p-1" 
+                      data-bs-toggle="dropdown" 
+                      style="color: #94a3b8; 
+                             background: transparent; 
+                             border: none;
+                             opacity: 0.7;
+                             border-radius: 4px;"
+                      onclick="event.preventDefault(); event.stopPropagation();"
+                      onmouseover="this.style.opacity='1'; this.style.background='rgba(30,41,59,0.8)';"
+                      onmouseout="this.style.opacity='0.7'; this.style.background='transparent';"
+                      aria-label="More options">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end shadow"
+                  style="background: #1e293b; 
+                         border: 1px solid rgba(56,189,248,0.2);
+                         border-radius: 8px;
+                         min-width: 160px;">
+                <li>
+                  <button class="dropdown-item" 
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editFolderModal{{ folder.id }}"
+                          onclick="event.stopPropagation();"
+                          style="color: #cbd5e1; 
+                                 padding: 0.5rem 1rem;
+                                 transition: background 0.2s ease;"
+                          onmouseover="this.style.background='rgba(56,189,248,0.1)'"
+                          onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-pencil me-2"></i>Rename
+                  </button>
+                </li>
+                <li><hr class="dropdown-divider" style="border-color: rgba(56,189,248,0.2); margin: 0.25rem 0;"></li>
+                <li>
+                  <button class="dropdown-item text-danger" 
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteFolderModal{{ folder.id }}"
+                          onclick="event.stopPropagation();"
+                          style="padding: 0.5rem 1rem;
+                                 transition: background 0.2s ease;"
+                          onmouseover="this.style.background='rgba(239,68,68,0.1)'"
+                          onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-trash me-2"></i>Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Files Section -->
+    {% if files %}
+    <div class="mb-5">
+      
+      <!-- Section Header -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 style="color: #94a3b8; 
+                   font-weight: 500; 
+                   font-size: clamp(0.875rem, 2vw, 1rem);
+                   text-transform: uppercase;
+                   letter-spacing: 0.05em;
+                   margin: 0;">
+          Files
+        </h2>
+        <span style="color: #64748b; font-size: clamp(0.75rem, 2vw, 0.875rem);">
+          {{ files|length }} file{{ files|length|pluralize }}
+        </span>
+      </div>
+
+      <!-- Files Grid -->
+      <div class="row g-3 notes-grid">
+        {% for file in files %}
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+          <div class="file-card h-100"
+               style="border: 1px solid rgba(34,197,94,0.12); 
+                      border-radius: 12px;
+                      padding: 1rem;
+                      position: relative;
+                      background: rgba(34,197,94,0.03);
+                      cursor: pointer;"
+               onmouseover="this.style.borderColor='rgba(34,197,94,0.3)'; 
+                           this.style.background='rgba(34,197,94,0.08)';"
+               onmouseout="this.style.borderColor='rgba(34,197,94,0.12)'; 
+                          this.style.background='rgba(34,197,94,0.03)';">
+
+            <a href="{{ file.file.url }}" 
+               target="_blank"
+               style="text-decoration: none; 
+                      color: inherit; 
+                      display: block;">
+
+              <!-- File Icon + Name -->
+              <div class="d-flex align-items-start mb-2">
+                <!-- File Type Icon -->
+                {% if file.get_file_extension == 'pdf' %}
+                  <i class="bi bi-file-earmark-pdf-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #ef4444; flex-shrink: 0;"></i>
+                {% elif file.get_file_extension == 'docx' or file.get_file_extension == 'doc' %}
+                  <i class="bi bi-file-earmark-word-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #3b82f6; flex-shrink: 0;"></i>
+                {% elif file.get_file_extension == 'xlsx' or file.get_file_extension == 'xls' %}
+                  <i class="bi bi-file-earmark-excel-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #10b981; flex-shrink: 0;"></i>
+                {% elif file.get_file_extension == 'pptx' or file.get_file_extension == 'ppt' %}
+                  <i class="bi bi-file-earmark-ppt-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #f59e0b; flex-shrink: 0;"></i>
+                {% elif file.get_file_extension == 'jpg' or file.get_file_extension == 'jpeg' or file.get_file_extension == 'png' or file.get_file_extension == 'gif' %}
+                  <i class="bi bi-file-earmark-image-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #a855f7; flex-shrink: 0;"></i>
+                {% elif file.get_file_extension == 'zip' or file.get_file_extension == 'rar' %}
+                  <i class="bi bi-file-earmark-zip-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #f97316; flex-shrink: 0;"></i>
+                {% else %}
+                  <i class="bi bi-file-earmark-fill me-2" 
+                     style="font-size: clamp(1.25rem, 3vw, 1.5rem); color: #22c55e; flex-shrink: 0;"></i>
+                {% endif %}
+                
+                <h3 style="color: #cbd5e1; 
+                          font-weight: 500; 
+                          font-size: clamp(0.875rem, 2vw, 0.9375rem);
+                          line-height: 1.4;
+                          margin: 0;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          display: -webkit-box;
+                          
+                          -webkit-box-orient: vertical;
+                          word-break: break-word;"
+                   title="{{ file.name }}">
+                  {{ file.name }}
+                </h3>
+              </div>
+
+              <!-- File Info -->
+              <div style="display: flex; 
+                         flex-direction: column; 
+                         gap: 0.25rem;">
+                <small style="color: #64748b; font-size: clamp(0.65rem, 1.5vw, 0.7rem);">
+                  {{ file.get_human_readable_size }}
+                </small>
+                <small style="color: #64748b; font-size: clamp(0.65rem, 1.5vw, 0.7rem);">
+                  {{ file.created_at|date:"M d, Y" }}
+                </small>
+              </div>
+
+            </a>
+
+            <!-- Three Dot Menu -->
+            <div class="dropdown" 
+                 style="position: absolute; 
+                        top: 0.5rem; 
+                        right: 0.5rem; 
+                        z-index: 10;">
+              <button class="btn btn-sm p-1" 
+                      data-bs-toggle="dropdown" 
+                      style="color: #94a3b8; 
+                             background: transparent; 
+                             border: none;
+                             opacity: 0.7;
+                             border-radius: 4px;"
+                      onclick="event.preventDefault(); event.stopPropagation();"
+                      onmouseover="this.style.opacity='1'; this.style.background='rgba(30,41,59,0.8)';"
+                      onmouseout="this.style.opacity='0.7'; this.style.background='transparent';"
+                      aria-label="More options">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+
+              <ul class="dropdown-menu dropdown-menu-end shadow"
+                  style="background: #1e293b; 
+                         border: 1px solid rgba(34,197,94,0.2);
+                         border-radius: 8px;
+                         min-width: 160px;">
+                <li>
+                  <a class="dropdown-item" 
+                     href="{{ file.file.url }}" 
+                     target="_blank" 
+                     style="color: #cbd5e1; 
+                            padding: 0.5rem 1rem;
+                            transition: background 0.2s ease;"
+                     onmouseover="this.style.background='rgba(34,197,94,0.1)'"
+                     onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-eye me-2"></i>View
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" 
+                     href="{{ file.file.url }}" 
+                     download 
+                     style="color: #cbd5e1; 
+                            padding: 0.5rem 1rem;
+                            transition: background 0.2s ease;"
+                     onmouseover="this.style.background='rgba(34,197,94,0.1)'"
+                     onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-download me-2"></i>Download
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" style="border-color: rgba(34,197,94,0.2); margin: 0.25rem 0;"></li>
+                <li>
+                  <button class="dropdown-item text-danger" 
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteFileModal{{ file.id }}"
+                          onclick="event.stopPropagation();"
+                          style="padding: 0.5rem 1rem;
+                                 transition: background 0.2s ease;"
+                          onmouseover="this.style.background='rgba(239,68,68,0.1)'"
+                          onmouseout="this.style.background='transparent'">
+                    <i class="bi bi-trash me-2"></i>Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Drag and Drop Zone -->
+    <div id="dropZone" 
+         style="border: 2px dashed rgba(56,189,248,0.3);
+                border-radius: 12px;
+                padding: clamp(2rem, 5vw, 3rem) clamp(1rem, 3vw, 2rem);
+                text-align: center;
+                background: rgba(56,189,248,0.03);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                margin-bottom: 2rem;">
+      
+      <i class="bi bi-cloud-arrow-up" 
+         style="font-size: clamp(2.5rem, 6vw, 3rem); 
+                color: #38bdf8; 
+                display: block;
+                margin-bottom: 1rem;"></i>
+      
+      <h3 style="color: #cbd5e1; 
+                 font-weight: 500; 
+                 font-size: clamp(1rem, 3vw, 1.25rem);
+                 margin-bottom: 0.5rem;">
+        Drag & Drop files here
+      </h3>
+      
+      <p style="color: #94a3b8; 
+                font-size: clamp(0.8125rem, 2vw, 0.875rem);
+                margin-bottom: 1rem;">
+        or click to browse (Only PDF, JPG, JPEG, PNG • Max 20MB each)
+      </p>
+
       <!-- Hidden File Input -->
       <input type="file" 
              id="fileInput" 
@@ -100,23 +459,41 @@
     </div>
 
     <!-- Selected Files Display -->
-    <div id="selectedFilesContainer" style="display: none;">
-      <div class="selected-files-container">
+    <div id="selectedFilesContainer" style="display: none; margin-bottom: 2rem;">
+      <div style="background: rgba(30,41,59,0.5);
+                  border: 1px solid rgba(56,189,248,0.2);
+                  border-radius: 12px;
+                  padding: clamp(1rem, 3vw, 1.5rem);">
         
-        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-          <h6 class="m-0" style="color: #cbd5e1; font-weight: 500;">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
+          <h3 style="color: #cbd5e1; 
+                     font-weight: 500; 
+                     font-size: clamp(0.9375rem, 2.5vw, 1rem);
+                     margin: 0;">
             <i class="bi bi-files me-2"></i>
             Selected Files (<span id="fileCount">0</span>)
-          </h6>
+          </h3>
           <button type="button" 
                   id="clearAllBtn"
-                  class="btn btn-sm file-item-remove">
+                  class="btn btn-sm"
+                  style="background: rgba(239,68,68,0.1);
+                         border: 1px solid #ef4444;
+                         color: #ef4444;
+                         padding: 0.25rem 0.75rem;
+                         border-radius: 6px;
+                         font-size: 0.875rem;
+                         transition: all 0.2s ease;"
+                  onmouseover="this.style.background='rgba(239,68,68,0.2)'"
+                  onmouseout="this.style.background='rgba(239,68,68,0.1)'">
             <i class="bi bi-x-circle me-1"></i> Clear All
           </button>
         </div>
 
         <!-- Files List -->
-        <div id="filesList" class="files-list">
+        <div id="filesList" 
+             style="max-height: 300px; 
+                    overflow-y: auto;
+                    margin-bottom: 1rem;">
           <!-- Files will be added here dynamically -->
         </div>
 
@@ -136,19 +513,19 @@
                  accept=".pdf,.jpg,.jpeg,.png"
                  style="display: none;">
 
-          <div class="d-flex gap-2 justify-content-end flex-wrap">
+          <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
             <button type="button" 
-                    class="btn btn-secondary btn-custom"
+                    class="btn btn-secondary"
+                    style="border-radius: 8px; padding: 0.5rem 1rem;"
                     onclick="document.getElementById('fileInput').click()">
-              <i class="bi bi-plus-circle"></i>
-              <span>Add More</span>
+              <i class="bi bi-plus-circle me-1"></i> Add More Files
             </button>
             
             <button type="submit" 
-                    class="btn btn-custom btn-info-custom"
+                    class="btn btn-info-custom"
+                    style="border-radius: 8px; padding: 0.5rem 1rem;"
                     id="uploadBtn">
-              <i class="bi bi-cloud-upload"></i>
-              <span>Upload All</span>
+              <i class="bi bi-cloud-upload me-1"></i> Upload All Files
             </button>
           </div>
         </form>
@@ -156,193 +533,51 @@
       </div>
     </div>
 
-    <!-- Folders Section -->
-    {% if folders %}
-    <section class="mb-5">
-      
-      <!-- Section Header -->
-      <div class="section-header">
-        <h6 class="section-title">Folders</h6>
-        <span class="section-count">
-          {{ folders|length }} folder{{ folders|length|pluralize }}
-        </span>
-      </div>
-
-      <!-- Folders Grid -->
-      <div class="row g-3">
-        {% for folder in folders %}
-        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-          <div class="folder-card">
-
-            <a href="{% url 'folder_list' folder.id %}">
-              <i class="bi bi-folder-fill folder-icon"></i>
-              <h6 class="folder-name" title="{{ folder.name }}">
-                {{ folder.name }}
-              </h6>
-              <small class="folder-date">
-                {{ folder.created_at|date:"M d, Y" }}
-              </small>
-            </a>
-
-            <!-- Three Dot Menu -->
-            <div class="card-menu dropdown">
-              <button class="menu-btn" 
-                      data-bs-toggle="dropdown" 
-                      onclick="event.preventDefault(); event.stopPropagation();"
-                      aria-label="More options">
-                <i class="bi bi-three-dots"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
-                <li>
-                  <button class="dropdown-item" 
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#editFolderModal{{ folder.id }}"
-                          onclick="event.stopPropagation();">
-                    <i class="bi bi-pencil me-2"></i>Rename
-                  </button>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <button class="dropdown-item text-danger" 
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteFolderModal{{ folder.id }}"
-                          onclick="event.stopPropagation();">
-                    <i class="bi bi-trash me-2"></i>Delete
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
-
-    <!-- Files Section -->
-    {% if files %}
-    <section class="mb-5">
-      
-      <!-- Section Header -->
-      <div class="section-header">
-        <h6 class="section-title">Files</h6>
-        <span class="section-count">
-          {{ files|length }} file{{ files|length|pluralize }}
-        </span>
-      </div>
-
-      <!-- Files Grid -->
-      <div class="row g-3">
-        {% for file in files %}
-        <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-          <div class="file-card">
-
-            <a href="{{ file.file.url }}" target="_blank">
-              
-              <!-- File Type Icon -->
-              {% if file.get_file_extension == 'pdf' %}
-                <i class="bi bi-file-earmark-pdf-fill file-icon" style="color:#ef4444;"></i>
-              {% elif file.get_file_extension == 'docx' or file.get_file_extension == 'doc' %}
-                <i class="bi bi-file-earmark-word-fill file-icon" style="color:#3b82f6;"></i>
-              {% elif file.get_file_extension == 'xlsx' or file.get_file_extension == 'xls' %}
-                <i class="bi bi-file-earmark-excel-fill file-icon" style="color:#10b981;"></i>
-              {% elif file.get_file_extension == 'pptx' or file.get_file_extension == 'ppt' %}
-                <i class="bi bi-file-earmark-ppt-fill file-icon" style="color:#f59e0b;"></i>
-              {% elif file.get_file_extension == 'jpg' or file.get_file_extension == 'jpeg' or file.get_file_extension == 'png' or file.get_file_extension == 'gif' %}
-                <i class="bi bi-file-earmark-image-fill file-icon" style="color:#a855f7;"></i>
-              {% elif file.get_file_extension == 'zip' or file.get_file_extension == 'rar' %}
-                <i class="bi bi-file-earmark-zip-fill file-icon" style="color:#f97316;"></i>
-              {% else %}
-                <i class="bi bi-file-earmark-fill file-icon" style="color:#22c55e;"></i>
-              {% endif %}
-              
-              <h6 class="file-name" title="{{ file.name }}">
-                {{ file.name }}
-              </h6>
-
-              <div class="file-info">
-                <small class="file-meta">{{ file.get_human_readable_size }}</small>
-                <small class="file-meta">{{ file.created_at|date:"M d, Y" }}</small>
-              </div>
-
-            </a>
-
-            <!-- Three Dot Menu -->
-            <div class="card-menu dropdown">
-              <button class="menu-btn" 
-                      data-bs-toggle="dropdown" 
-                      onclick="event.preventDefault(); event.stopPropagation();"
-                      aria-label="More options">
-                <i class="bi bi-three-dots"></i>
-              </button>
-
-              <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
-                <li>
-                  <a class="dropdown-item" 
-                     href="{{ file.file.url }}" 
-                     target="_blank">
-                    <i class="bi bi-eye me-2"></i>View
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" 
-                     href="{{ file.file.url }}" 
-                     download>
-                    <i class="bi bi-download me-2"></i>Download
-                  </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <button class="dropdown-item text-danger" 
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteFileModal{{ file.id }}"
-                          onclick="event.stopPropagation();">
-                    <i class="bi bi-trash me-2"></i>Delete
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-    {% endif %}
-
     <!-- Empty State -->
     {% if not folders and not files %}
-    <div class="empty-state">
-      <i class="bi bi-inbox empty-icon"></i>
-      <h3 class="empty-title">No files or folders yet</h3>
-      <p class="empty-text">Drag files above or create a folder to get started</p>
+    <div class="text-center" style="padding: clamp(2rem, 5vw, 3rem) 1rem;">
+      <i class="bi bi-inbox" 
+         style="font-size: clamp(3rem, 8vw, 6rem); 
+                color: #475569; 
+                margin-bottom: 1.5rem; 
+                display: block;
+                opacity: 0.5;"></i>
+      
+      <h3 style="color: #cbd5e1; 
+                 font-weight: 500; 
+                 font-size: clamp(1.125rem, 3vw, 1.5rem);
+                 margin-bottom: 0.75rem;">
+        No files or folders yet
+      </h3>
+      
+      <p style="color: #94a3b8; 
+                margin-bottom: 2rem;
+                font-size: clamp(0.875rem, 2vw, 0.95rem);">
+        Drag files above or create a folder to get started
+      </p>
+
       <button type="button" 
-              class="btn btn-custom btn-outline-custom" 
+              class="btn btn-outline-light" 
               data-bs-toggle="modal" 
-              data-bs-target="#createFolderModal">
-        <i class="bi bi-folder-plus"></i>
-        <span>Create Folder</span>
+              data-bs-target="#createFolderModal"
+              style="padding: 0.65rem 1.5rem; border-radius: 8px;">
+        <i class="bi bi-folder-plus me-2"></i> New Folder
       </button>
     </div>
     {% endif %}
 
   </div>
-</main>
-
-<!-- ==================== MODALS ==================== -->
+</section>
 
 <!-- Create Folder Modal -->
 <div class="modal fade" id="createFolderModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">New Folder</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-content" style="background: #1e293b; border: 1px solid rgba(56,189,248,0.3); border-radius: 12px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(56,189,248,0.2); padding: 1rem 1.5rem;">
+        <h5 class="modal-title" style="color: #cbd5e1; font-weight: 500; font-size: 1.125rem;">
+          New Folder
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       {% if current_folder %}
@@ -352,18 +587,33 @@
       {% endif %}
         {% csrf_token %}
 
-        <div class="modal-body">
+        <div class="modal-body" style="padding: 1.5rem;">
           <input type="text" 
                  class="form-control" 
                  name="folder_name" 
                  required 
                  autofocus 
-                 placeholder="Untitled folder">
+                 placeholder="Untitled folder"
+                 style="background: rgba(30,41,59,0.5); 
+                        border: 1px solid rgba(56,189,248,0.3); 
+                        color: #cbd5e1;
+                        padding: 0.75rem;
+                        border-radius: 8px;
+                        font-size: 0.9375rem;">
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-custom btn-info-custom">Create</button>
+        <div class="modal-footer" style="border-top: 1px solid rgba(56,189,248,0.2); padding: 1rem 1.5rem;">
+          <button type="button" 
+                  class="btn btn-secondary" 
+                  data-bs-dismiss="modal"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Cancel
+          </button>
+          <button type="submit" 
+                  class="btn btn-info-custom"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Create
+          </button>
         </div>
       </form>
     </div>
@@ -374,25 +624,40 @@
 {% for folder in folders %}
 <div class="modal fade" id="editFolderModal{{ folder.id }}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Rename Folder</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-content" style="background: #1e293b; border: 1px solid rgba(56,189,248,0.3); border-radius: 12px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(56,189,248,0.2); padding: 1rem 1.5rem;">
+        <h5 class="modal-title" style="color: #cbd5e1; font-weight: 500; font-size: 1.125rem;">Rename</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <form method="POST" action="{% url 'edit_folder' folder_id=folder.pk %}">
         {% csrf_token %}
-        <div class="modal-body">
+        <div class="modal-body" style="padding: 1.5rem;">
           <input type="text" 
                  class="form-control" 
                  name="new_folder_name" 
                  value="{{ folder.name }}" 
-                 required>
+                 required
+                 style="background: rgba(30,41,59,0.5); 
+                        border: 1px solid rgba(56,189,248,0.3); 
+                        color: #cbd5e1;
+                        padding: 0.75rem;
+                        border-radius: 8px;
+                        font-size: 0.9375rem;">
         </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-custom btn-info-custom">Rename</button>
+        <div class="modal-footer" style="border-top: 1px solid rgba(56,189,248,0.2); padding: 1rem 1.5rem;">
+          <button type="button" 
+                  class="btn btn-secondary" 
+                  data-bs-dismiss="modal"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Cancel
+          </button>
+          <button type="submit" 
+                  class="btn btn-info-custom"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Rename
+          </button>
         </div>
       </form>
     </div>
@@ -404,26 +669,35 @@
 {% for folder in folders %}
 <div class="modal fade" id="deleteFolderModal{{ folder.id }}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content delete-modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete folder?</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-content" style="background: #1e293b; border: 1px solid rgba(239,68,68,0.4); border-radius: 12px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(239,68,68,0.3); padding: 1rem 1.5rem;">
+        <h5 class="modal-title" style="color: #ef4444; font-weight: 500; font-size: 1.125rem;">Delete folder?</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <div class="modal-body" style="color:#cbd5e1;">
-        <p style="margin-bottom: 1rem;">
-          <strong style="color:#ef4444;">{{ folder.name }}</strong> and all of its contents will be deleted forever.
+      <div class="modal-body" style="color: #cbd5e1; padding: 1.5rem;">
+        <p style="margin-bottom: 1rem; font-size: 0.9375rem;">
+          <strong style="color: #ef4444;">{{ folder.name }}</strong> and all of its contents will be deleted forever.
         </p>
         <p style="font-size: 0.875rem; color: #94a3b8; margin: 0;">
           This action cannot be undone.
         </p>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <div class="modal-footer" style="border-top: 1px solid rgba(239,68,68,0.3); padding: 1rem 1.5rem;">
+        <button type="button" 
+                class="btn btn-secondary" 
+                data-bs-dismiss="modal"
+                style="border-radius: 8px; padding: 0.5rem 1rem;">
+          Cancel
+        </button>
         <form method="POST" action="{% url 'delete_folder' folder.id %}" style="display: inline;">
           {% csrf_token %}
-          <button type="submit" class="btn btn-danger">Delete forever</button>
+          <button type="submit" 
+                  class="btn btn-danger"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Delete forever
+          </button>
         </form>
       </div>
     </div>
@@ -435,38 +709,35 @@
 {% for file in files %}
 <div class="modal fade" id="deleteFileModal{{ file.id }}" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content delete-modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Delete file?</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal-content" style="background: #1e293b; border: 1px solid rgba(239,68,68,0.4); border-radius: 12px;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(239,68,68,0.3); padding: 1rem 1.5rem;">
+        <h5 class="modal-title" style="color: #ef4444; font-weight: 500; font-size: 1.125rem;">Delete file?</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <div class="modal-body" style="color:#cbd5e1;">
-        <p style="margin-bottom: 1rem;">
-          <strong style="
-            color:#ef4444;
-            display:inline-block;
-            max-width:220px;      /* adjust as needed for modal width */
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            vertical-align:bottom;"
-            title="{{ file.name }}"
-          >
-            {{ file.name }}
-          </strong> will be deleted forever.
-
+      <div class="modal-body" style="color: #cbd5e1; padding: 1.5rem;">
+        <p style="margin-bottom: 1rem; font-size: 0.9375rem;">
+          <strong style="color: #ef4444;">{{ file.name }}</strong> will be deleted forever.
         </p>
         <p style="font-size: 0.875rem; color: #94a3b8; margin: 0;">
           This action cannot be undone.
         </p>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <form method="POST" action="{% url 'delete_file' file_id=file.id %}" style="display: inline;">
+      <div class="modal-footer" style="border-top: 1px solid rgba(239,68,68,0.3); padding: 1rem 1.5rem;">
+        <button type="button" 
+                class="btn btn-secondary" 
+                data-bs-dismiss="modal"
+                style="border-radius: 8px; padding: 0.5rem 1rem;">
+          Cancel
+        </button>
+        <form method="POST" action="{% url 'delete_file' file.id%}" style="display: inline;">
           {% csrf_token %}
-          <button type="submit" class="btn btn-danger">Delete forever</button>
+          <button type="submit" 
+                  class="btn btn-danger"
+                  style="border-radius: 8px; padding: 0.5rem 1rem;">
+            Delete forever
+          </button>
         </form>
       </div>
     </div>
@@ -474,7 +745,7 @@
 </div>
 {% endfor %}
 
-<!-- JavaScript -->
+<!-- JavaScript for Drag & Drop and File Handling -->
 <script src="{% static 'js/notes.js' %}"></script>
 
 {% endblock content %}

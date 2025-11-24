@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Folder, File
 
+from .pdfconverter import pdfConverter
 
 
 # Create your views here.
@@ -97,6 +98,16 @@ def create_folder(request, parent_id=None):
     return redirect('folder_list')
 
 
+"""
+In the function upload_file, 
+we provided an arguement that folder_id = None.
+It is only necessary to set the default value, when we know that if there is a chance that the url, will not send the value, which is possible because, if the folder is in root, then it will not have any id.
+
+so if we only set the folder_id, then it is interpreted by the views, that this argument is required, if not given then it will throw an error. 
+
+We give None because, it is handled by the views automatically that, if url gives the id, then accept, if not then use None.
+"""
+
 
 @login_required
 def upload_file(request, folder_id=None):
@@ -117,17 +128,45 @@ def upload_file(request, folder_id=None):
 
         for files in uploaded_file:
             filename = files.name
-
+            extention = files.content_type
             filesize = files.size
+            mime_type = files.content_type
+            """
+            If we write for, 
+            extension = files.content_type, 
+            then 
+            print(extension),
+            output will: 
+            if pdf:
+            application/pdf, 
+            if image:
+            image/jpg if it is jpg
+            image/png if it is png.
+
+            the format, name/extension.  (eg: application/pdf)
+            It is world wide recognised, and can not be changed, it is specified globally.
+            """
+
+            # We are checking that if the files is image, then it will be converted into pdf.
+            if extention != 'application/pdf':
+                file = files
+                converted_file = pdfConverter(file)
+                files = converted_file
+                filename = converted_file.name
+            
+
+
+
             # Checking the file existance
             exists_file = File.objects.filter(
             name=filename, # Django handles storage
             folder=folder,
             owner=request.user,  # Get file size in bytes
-            mime_type=files.content_type,  # Get MIME type
+            mime_type='application/pdf',  # Get MIME type
         )
             if exists_file.exists():
-                messages.info(request, f"{exists_file.first().name} is already exists.")
+                for existing_file in exists_file:
+                    messages.info(request, f"{existing_file.name} is already exists.")
                 if folder_id:
                     return redirect('folder_list', folder_id=folder_id)
                 else:
@@ -140,7 +179,7 @@ def upload_file(request, folder_id=None):
                 folder=folder,
                 owner=request.user,
                 size=filesize,  # Get file size in bytes
-                mime_type=files.content_type  # Get MIME type
+                mime_type='application/pdf'  # Get MIME type
                                                 )
                 messages.success(request, f"File '{filename}' uploaded successfully")
         if folder_id:

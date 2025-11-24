@@ -5,13 +5,17 @@
     justify-content: center;
     text-align: center;
     border: 2px dashed rgba(56, 189, 248, 0.4);
-    transition: all 0.3s ease;
   }
 
-  .upload-card:hover {
-    background: rgba(30, 41, 59, 0.8) !important;
-    border-color: rgba(56, 189, 248, 0.6) !important;
-    transform: translateY(-4px);
+  @media (hover: hover) {
+    .upload-card {
+        transition: all 0.3s ease;
+    }
+    .upload-card:hover {
+        background: rgba(30, 41, 59, 0.8) !important;
+        border-color: rgba(56, 189, 248, 0.6) !important;
+        transform: translateY(-4px);
+    }
   }
 
   .upload-card.drag-over {
@@ -113,11 +117,15 @@
     color: #64748b;
     cursor: pointer;
     font-size: 0.9rem;
-    transition: color 0.2s;
   }
 
-  .btn-clear-all:hover {
-    color: #ef4444;
+  @media (hover: hover) {
+    .btn-clear-all {
+        transition: color 0.2s;
+    }
+    .btn-clear-all:hover {
+        color: #ef4444;
+    }
   }
 
   .selected-files-list {
@@ -138,12 +146,16 @@
     align-items: center;
     justify-content: space-between;
     animation: fadeIn 0.3s ease;
-    transition: all 0.3s;
   }
 
-  .selected-file-item:hover {
-    background: rgba(30, 41, 59, 0.9);
-    border-color: rgba(56, 189, 248, 0.4);
+  @media (hover: hover) {
+    .selected-file-item {
+        transition: all 0.3s;
+    }
+    .selected-file-item:hover {
+        background: rgba(30, 41, 59, 0.9);
+        border-color: rgba(56, 189, 248, 0.4);
+    }
   }
 
   @keyframes fadeIn {
@@ -257,15 +269,19 @@
     cursor: pointer;
     font-size: 1.2rem;
     padding: 0.25rem;
-    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .btn-remove-file:hover {
-    color: #dc2626;
-    transform: scale(1.2);
+  @media (hover: hover) {
+    .btn-remove-file {
+        transition: all 0.2s;
+    }
+    .btn-remove-file:hover {
+        color: #dc2626;
+        transform: scale(1.2);
+    }
   }
 
   /* Upload Stats */
@@ -312,13 +328,17 @@
     padding: 0.5rem 1.5rem;
     cursor: pointer;
     border-radius: 5px;
-    transition: all 0.3s ease;
   }
 
-  .btn-success-custom:hover:not(:disabled) {
-    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+  @media (hover: hover) {
+    .btn-success-custom {
+        transition: all 0.3s ease;
+    }
+    .btn-success-custom:hover:not(:disabled) {
+        background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+    }
   }
 
   .btn-success-custom:disabled {
@@ -334,11 +354,15 @@
     padding: 0.5rem 1.5rem;
     cursor: pointer;
     border-radius: 5px;
-    transition: all 0.3s;
   }
 
-  .btn-outline-light:hover {
-    background: rgba(203, 213, 225, 0.1);
+  @media (hover: hover) {
+    .btn-outline-light {
+        transition: all 0.3s;
+    }
+    .btn-outline-light:hover {
+        background: rgba(203, 213, 225, 0.1);
+    }
   }
 
   /* Responsive */
@@ -384,12 +408,13 @@
   }
 
   /* Improved card hover effects */
-  .folder-card, .file-card {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .folder-card:hover, .file-card:hover {
-    transform: translateY(-4px);
+  @media (hover: hover) {
+    .folder-card, .file-card {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .folder-card:hover, .file-card:hover {
+        transform: translateY(-4px);
+    }
   }
 
   /* Better dropdown positioning on mobile */
@@ -464,3 +489,7 @@
   #filesList::-webkit-scrollbar-thumb:hover {
     background: rgba(56, 189, 248, 0.5);
   }
+  .dropdown-menu.show {
+    top: var(--bs-dropdown-position-y) !important;
+    left: var(--bs-dropdown-position-x) !important;
+}

@@ -11,6 +11,8 @@ body {
     background: rgba(30, 41, 59, 0.9) !important;
     backdrop-filter: blur(8px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1020;
 }
 
 .navbar-brand {
@@ -19,13 +21,17 @@ body {
 }
 
 .nav-link {
-    transition: all 0.3s ease;
     font-weight: 500;
 }
 
-.nav-link:hover {
-    color: #38bdf8 !important;
-    transform: translateY(-2px);
+@media (hover: hover) {
+    .nav-link {
+        transition: all 0.3s ease;
+    }
+    .nav-link:hover {
+        color: #38bdf8 !important;
+        transform: translateY(-2px);
+    }
 }
 
 .nav-link.active {
@@ -79,25 +85,33 @@ main {
     color: #0f172a;
     font-weight: 600;
     padding: 0.75rem 2rem;
-    transition: all 0.3s ease;
 }
 
-.btn-info-custom:hover {
-    background: #0ea5e9;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
+@media (hover: hover) {
+    .btn-info-custom {
+        transition: all 0.3s ease;
+    }
+    .btn-info-custom:hover {
+        background: #0ea5e9;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
+    }
 }
 
 .btn-outline-light {
     font-weight: 600;
     padding: 0.75rem 2rem;
-    transition: all 0.3s ease;
 }
 
-.btn-outline-light:hover {
-    background: #a4adb8;
-    color: #0f172a;
-    transform: translateY(-3px);
+@media (hover: hover) {
+    .btn-outline-light {
+        transition: all 0.3s ease;
+    }
+    .btn-outline-light:hover {
+        background: #a4adb8;
+        color: #0f172a;
+        transform: translateY(-3px);
+    }
 }
 
 .feature-card {
@@ -106,15 +120,19 @@ main {
     border-radius: 15px;
     padding: 2rem;
     color: #6c7888;
-    transition: all 0.3s ease;
     height: 100%;
 }
 
-.feature-card:hover {
-    transform: translateY(-8px);
-    background: #334155;
-    border-color: #38bdf8;
-    box-shadow: 0 12px 24px rgba(56, 189, 248, 0.15);
+@media (hover: hover) {
+    .feature-card {
+        transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-8px);
+        background: #334155;
+        border-color: #38bdf8;
+        box-shadow: 0 12px 24px rgba(56, 189, 248, 0.15);
+    }
 }
 
 .feature-card h4 {
@@ -141,11 +159,15 @@ footer {
 footer a {
     color: #38bdf8;
     text-decoration: none;
-    transition: all 0.3s ease;
 }
 
-footer a:hover {
-    color: #0ea5e9;
+@media (hover: hover) {
+    footer a {
+        transition: all 0.3s ease;
+    }
+    footer a:hover {
+        color: #0ea5e9;
+    }
 }
 
 @media (max-width: 768px) {
@@ -222,4 +244,11 @@ footer a:hover {
   --bs-dropdown-link-hover-color: #f8fafc;   /* hover text */
   --bs-dropdown-link-hover-bg: rgba(148,163,184,0.12);  /* subtle hover */
   --bs-dropdown-link-active-bg: rgba(56,189,248,0.18);  /* active */
+}
+
+/* Make ALL dropdowns appear on top of everything */
+.dropdown-menu {
+    position: fixed !important;
+    z-index: 999999 !important;
+    transform: translate3d(0,0,0) !important;
 }

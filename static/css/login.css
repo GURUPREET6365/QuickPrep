@@ -27,13 +27,17 @@ body {
 .btn-outline-light {
     color: #38bdf8;
     border-color: #38bdf8;
-    transition: all 0.3s ease;
 }
 
-.btn-outline-light:hover {
-    background-color: #38bdf8;
-    color: #0f172a;
-    transform: translateY(-2px);
+@media (hover: hover) {
+    .btn-outline-light {
+        transition: all 0.3s ease;
+    }
+    .btn-outline-light:hover {
+        background-color: #38bdf8;
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
 }
 
 main {
@@ -72,7 +76,12 @@ main {
     background: rgba(15, 23, 42, 0.5);
     border: 1px solid rgba(56, 189, 248, 0.2);
     color: #f8fafc;
-    transition: all 0.3s ease;
+}
+
+@media (hover: hover) {
+    .form-control {
+        transition: all 0.3s ease;
+    }
 }
 
 .form-control:focus {
@@ -113,14 +122,18 @@ main {
     color: #0f172a;
     font-weight: 600;
     padding: 0.75rem 2rem;
-    transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
-    color: #0f172a;
+@media (hover: hover) {
+    .btn-primary {
+        transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(56, 189, 248, 0.3);
+        color: #0f172a;
+    }
 }
 
 .btn-primary:active {
@@ -130,12 +143,16 @@ main {
 a {
     color: #38bdf8;
     text-decoration: none;
-    transition: all 0.3s ease;
 }
 
-a:hover {
-    color: #0ea5e9;
-    text-decoration: underline;
+@media (hover: hover) {
+    a {
+        transition: all 0.3s ease;
+    }
+    a:hover {
+        color: #0ea5e9;
+        text-decoration: underline;
+    }
 }
 
 .text-muted {
@@ -182,8 +199,10 @@ footer a {
     color: #38bdf8;
 }
 
-footer a:hover {
-    color: #0ea5e9;
+@media (hover: hover) {
+    footer a:hover {
+        color: #0ea5e9;
+    }
 }
 
 /* Responsive */

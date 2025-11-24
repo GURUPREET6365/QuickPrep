@@ -41,37 +41,53 @@ body {
 .btn-outline-secondary,
 .btn-outline-danger {
     border-width: 1px;
-    transition: all 0.3s ease;
+}
+
+@media (hover: hover) {
+    .btn-outline-primary,
+    .btn-outline-secondary,
+    .btn-outline-danger {
+        transition: all 0.3s ease;
+    }
 }
 
 .btn-outline-primary {
     color: #38bdf8;
     border-color: #38bdf8;
 }
-.btn-outline-primary:hover {
-    background: #38bdf8;
-    color: #0f172a;
-    transform: translateY(-2px);
+
+@media (hover: hover) {
+    .btn-outline-primary:hover {
+        background: #38bdf8;
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
 }
 
 .btn-outline-secondary {
     color: #cbd5e1;
     border-color: #475569;
 }
-.btn-outline-secondary:hover {
-    background: #cbd5e1;
-    color: #0f172a;
-    transform: translateY(-2px);
+
+@media (hover: hover) {
+    .btn-outline-secondary:hover {
+        background: #cbd5e1;
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
 }
 
 .btn-outline-danger {
     color: #ef4444;
     border-color: rgba(239, 68, 68, 0.7);
 }
-.btn-outline-danger:hover {
-    background: #ef4444;
-    color: #0f172a;
-    transform: translateY(-2px);
+
+@media (hover: hover) {
+    .btn-outline-danger:hover {
+        background: #ef4444;
+        color: #0f172a;
+        transform: translateY(-2px);
+    }
 }
 
 .list-group-item {

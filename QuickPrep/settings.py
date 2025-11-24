@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 from pathlib import Path
 
 
@@ -20,16 +24,6 @@ import dj_database_url
 
 from dotenv import load_dotenv, find_dotenv
 
-
-try:
-    from . import secrets
-    SECRET_KEY = secrets.SECRET_KEY
-    EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
-    EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
-except ImportError:
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-key-for-testing')
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 
@@ -60,6 +54,8 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".onrender.com,localhost,127.0.0.1").
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
+    'cloudinary',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,15 +66,15 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
     # 'daily_goals.apps.DailyGoalsConfig',
-    'email_service.apps.EmailServiceConfig',
+    # 'email_service.apps.EmailServiceConfig',
     'Notes.apps.NotesConfig',
     # Cloudinary apps (added these)
-    'cloudinary_storage',
-    'cloudinary',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,7 +82,7 @@ MIDDLEWARE = [
     # What is httprequest object is  When a client requests a page or resource from your Django application, Django processes this request and encapsulates all the relevant information into an HttpRequest object.This HttpRequest object is then passed as the first argument to the corresponding view function that handles the request. and it helps to get request like method i.e POST OR GET and sessionid, cookies when the client ask for page.
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware"
+    
 ]
 
 ROOT_URLCONF = 'QuickPrep.urls'
@@ -113,28 +109,14 @@ WSGI_APPLICATION = 'QuickPrep.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # The dj_database_url is the python library which take the information from the url we provide for the database and this database contains all the information of the database.
-if DEBUG:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
-            conn_max_age=600
-        )
-    }
 
-else:
-    # For PythonAnywhere (MySQL)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'quickprep$default',  # Replace with your actual values
-            'USER': 'quickprep',  # Your PythonAnywhere username
-            'PASSWORD': secrets.DATABASE_PASSWORD,
-            'HOST': 'quickprep.mysql.pythonanywhere-services.com',
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600
+    )
+}
+
 
 
 # Password validation
@@ -196,37 +178,23 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # Generate this from Goo
 PASSWORD_RESET_TIMEOUT = 3600 
 
 
-
-MEDIA_ROOT = BASE_DIR / 'media'
-
-
 LOGIN_URL = 'login'
-
-# This is cloudaniry setup
-import cloudinary
-import cloudinary_storage
-
-
-if secrets:
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': secrets.CLOUDINARY_CLOUD_NAME,
-        'API_KEY': secrets.CLOUDINARY_API_KEY,
-        'API_SECRET': secrets.CLOUDINARY_API_SECRET,
-    }
-else:
-    # Fallback to env vars if secrets.py not found (e.g. some server)
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-    }
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+# This is cloudaniry setup
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+)
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
 }

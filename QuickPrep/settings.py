@@ -47,7 +47,12 @@ DEBUG = os.getenv("DEBUG", "False").lower() in ("1","true","t")
 
 
 # settings.py
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".onrender.com,localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = [
+    'quickprep-production.up.railway.app',
+    '*.railway.app',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 

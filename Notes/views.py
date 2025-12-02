@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Folder, File
+from django.utils import timezone
 
 from .pdfconverter import pdfConverter
 
@@ -150,10 +151,19 @@ def upload_file(request, folder_id=None):
             # We are checking that if the files is image, then it will be converted into pdf.
             if extention != 'application/pdf':
                 file = files
-                converted_file = pdfConverter(file)
-                files = converted_file
-                filename = converted_file.name
-            
+                try:
+
+                    converted_file = pdfConverter(file)
+                    files = converted_file
+                    filename = converted_file.name
+                
+                except Exception as e:
+                    messages.error(request, f'An error occured {e}')
+                    if folder_id:
+                        return redirect('folder_list', folder_id=folder_id)
+                    else:
+                        return redirect('folder_list')
+                
 
 
 
@@ -221,6 +231,7 @@ def edit_folder(request, folder_id):
         if new_folder == folder.name:
             messages.info(request, 'New name of the folder should be different from previous.')
         folder.name=new_folder
+        folder.updated_at = timezone.localdate()
         folder.save()
         parent= folder.parent_id
         if parent:
@@ -245,3 +256,7 @@ def delete_file(request, file_id):
         else:
             messages.success(request, f'{file.name} has been deleted.')
             return redirect('folder_list')
+
+
+
+

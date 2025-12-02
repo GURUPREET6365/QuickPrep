@@ -1,0 +1,111 @@
+{% extends "main.html" %}
+
+{% block title %}QuickPrep: Practice Questions{% endblock title %}
+
+{% block content %}
+
+<!-- Messages -->
+{% if messages %}
+<div class="container-fluid px-4 mt-3">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if user.is_authenticated %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-content">
+    <h1 class="hero-title">Your Practice <span style="color: #22c55e;">Questions</span></h1>
+    <p class="hero-subtitle">Review all your generated practice questions.</p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="features-section container-fluid">
+  <div class="container">
+    
+    <!-- Questions Grouped by Date -->
+    {% if grouped_questions %}
+      
+      <div class="row g-3">
+        
+        <!-- Loop through each group (file_id, date) -->
+        {% for group_key, questions_list in grouped_questions %}
+          {% with file_id=group_key.0 date=group_key.1 %}
+          
+          <div class="col-md-6 col-lg-4">
+            <!-- Link to question detail page -->
+            <a href="{% url 'detailed_question' file_id=file_id date=date %}" style="text-decoration: none;">
+              <div class="feature-card" style="cursor: pointer; transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;">
+                
+                <!-- Date Header -->
+                <div style="margin-bottom: 1rem;">
+                  <h5 style="margin: 0; color: #38bdf8; font-size: 1.2rem;">
+                    <i class="bi bi-calendar-event"></i> {{ date|date:'d M, Y' }}
+                  </h5>
+                </div>
+
+                <!-- File Information -->
+                <div style="margin-bottom: 1rem; flex-grow: 1;">
+                  <p style="margin: 0; color: #cbd5e1; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    File Information
+                  </p>
+                  
+                  <!-- Show file name from first question -->
+                  {% with first_question=questions_list.0 %}
+                    <h6 style="margin: 0.5rem 0 0 0; color: #22c55e; font-weight: 600; word-break: break-word;">
+                      📄 {{ first_question.file.name }}
+                    </h6>
+                  {% endwith %}
+                  
+                  <p style="margin: 0.5rem 0 0 0; color: #94a3b8; font-size: 0.85rem;">
+                    File ID: <span style="color: #38bdf8; font-weight: 600;">{{ file_id }}</span>
+                  </p>
+                </div>
+
+                <!-- Question Count Box -->
+                <div style="background: rgba(56, 189, 248, 0.1); padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem;">
+                  <p style="margin: 0; color: #94a3b8; font-size: 0.85rem;">
+                    Questions Generated
+                  </p>
+                  <p style="margin: 0.25rem 0 0 0; color: #38bdf8; font-size: 1.5rem; font-weight: bold;">
+                    {{ questions_list|length }}
+                  </p>
+                </div>
+
+                <!-- CTA Button -->
+                <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
+                  <span style="color: #38bdf8; font-size: 0.9rem; font-weight: 500;">
+                    View All Questions <i class="bi bi-arrow-right" style="margin-left: 0.5rem;"></i>
+                  </span>
+                </div>
+
+              </div>
+            </a>
+          </div>
+          
+          {% endwith %}
+        {% endfor %}
+
+      </div>
+
+    {% else %}
+      <div style="text-align: center; padding: 3rem;">
+        <p style="color: #94a3b8; font-size: 1.1rem;">
+          📭 No questions generated yet. Start by uploading a file!
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endif %}
+
+{% endblock content %}

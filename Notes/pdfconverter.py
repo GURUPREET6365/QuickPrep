@@ -12,6 +12,9 @@ def pdfConverter( file):
 
     # file = pymupdf.open(name) 
     file_object = pymupdf.open(stream=file.read(), filetype=ext_type)
+    """
+    stream = file.read(), we used because first pymupdf needs, bytes in data so read() converts the data into the byte and also, we used stream because as we gave the file to interpreter it is stored in the ram not in the disk, and so, we used this.
+    """
 
     # Now converting the file into pdf bytes.
     pdf_bytes = file_object.convert_to_pdf()

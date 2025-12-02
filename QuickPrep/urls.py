@@ -25,7 +25,8 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('home.urls')),
     # path('', include('daily_goals.urls')),
-    path('', include('Notes.urls'))
+    path('', include('Notes.urls')),
+    path('', include('Test_Practise.urls'))
 
 ]
 if settings.DEBUG:

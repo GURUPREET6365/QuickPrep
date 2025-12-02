@@ -11,8 +11,6 @@ body {
     background: rgba(30, 41, 59, 0.9) !important;
     backdrop-filter: blur(8px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    z-index: 1020;
 }
 
 .navbar-brand {
@@ -251,4 +249,34 @@ footer a {
     position: fixed !important;
     z-index: 999999 !important;
     transform: translate3d(0,0,0) !important;
+}
+/* FIX FOR NAVBAR DROPDOWN HIDDEN BEHIND STICKY HEADER */
+
+/* 1. Navbar positioning */
+.navbar {
+    position: relative;
+    z-index: 999;
+}
+
+/* 2. All dropdowns above sticky content */
+.dropdown-menu {
+    z-index: 1050 !important;
+}
+
+/* 3. Prevent overflow clipping */
+.navbar,
+.navbar-nav,
+.navbar-collapse {
+    overflow: visible !important;
+}
+
+/* 4. Ensure dropdown items are visible */
+.dropdown-menu .dropdown-item {
+    position: relative;
+    z-index: 1050;
+}
+
+/* 5. Optional: If you have a specific nav class */
+.top-navbar .dropdown-menu {
+    z-index: 1050 !important;
 }

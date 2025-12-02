@@ -68,7 +68,8 @@ INSTALLED_APPS = [
     # 'daily_goals.apps.DailyGoalsConfig',
     # 'email_service.apps.EmailServiceConfig',
     'Notes.apps.NotesConfig',
-    # Cloudinary apps (added these)
+    # Cloudinary apps (added these),
+    'Test_Practise.apps.TestPractiseConfig'
     
 ]
 

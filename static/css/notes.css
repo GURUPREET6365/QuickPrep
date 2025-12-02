@@ -493,3 +493,27 @@
     top: var(--bs-dropdown-position-y) !important;
     left: var(--bs-dropdown-position-x) !important;
 }
+
+/* Ensure dropdowns appear above sticky header */
+.dropdown-menu {
+    z-index: 1010 !important;  /* Higher than header's 100 */
+}
+
+/* Prevent overflow clipping */
+.folder-card, .file-card {
+    overflow: visible;
+}
+
+.selected-files-container {
+    overflow: visible;
+}
+.navbar {
+    z-index: 999;  /* One level below dropdowns */
+}
+
+.navbar .dropdown-menu {
+    z-index: 1010 !important;
+}
+
+
+/* For question generation model form */

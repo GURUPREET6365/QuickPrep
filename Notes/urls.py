@@ -27,6 +27,6 @@ urlpatterns = [
     path('notes/edit_folder/<int:folder_id>/', views.edit_folder, name='edit_folder'),
 
     # Delete file for root 
-    path('notes/delete_file/<int:file_id>/', views.delete_file, name='delete_file')    
+    path('notes/delete_file/<int:file_id>/', views.delete_file, name='delete_file'),
 
 ]

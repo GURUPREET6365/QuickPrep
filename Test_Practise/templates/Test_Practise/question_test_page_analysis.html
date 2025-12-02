@@ -1,0 +1,89 @@
+{% extends "main.html" %}
+
+
+{% block title %}QuickPrep: Test Results - {{ file.name }}{% endblock title %}
+
+
+{% block extra_css %}
+  
+
+  
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/question_test_page.css' %}">
+
+{% endblock extra_css %}
+
+{% block content %}
+
+<style>
+
+</style>
+
+<div class="results-container">
+    
+   
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-box stat-correct">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number">{{ correct_answers }}</div>
+            <div class="stat-label">Correct Answers</div>
+        </div>
+
+        <div class="stat-box stat-wrong">
+            <div class="stat-icon">❌</div>
+            <div class="stat-number">{{ incorrect_count }}</div>
+            <div class="stat-label">Wrong Answers</div>
+        </div>
+
+        <div class="stat-box stat-unanswered">
+            <div class="stat-icon">⏭️</div>
+            <div class="stat-number">{{ unanswered }}</div>
+            <div class="stat-label">Unanswered</div>
+        </div>
+    </div>
+
+    <!-- Review Section -->
+    <div class="review-section">
+        <h2 class="review-title">📝 Review Your Answers</h2>
+
+        {% for response in responses %}
+            <div class="review-item">
+
+                <div class="answer-row">
+                    <span class="answer-label">Your Answer:</span>
+                    <span class="answer-value">
+                        {{ response.selected_answer }}
+                        {% if response.is_correct %}
+                            <span class="badge correct-badge">✓ Correct</span>
+                        {% else %}
+                            <span class="badge wrong-badge">✗ Wrong</span>
+                        {% endif %}
+                    </span>
+                </div>
+
+                {% if not response.is_correct %}
+                    <div class="answer-row" style="background: rgba(34, 197, 94, 0.05);">
+                        <span class="answer-label">Correct Answer:</span>
+                        <span class="answer-value" style="color: var(--success-color);">
+                            {{ response.question.answer }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="{% url 'question-page' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Questions
+        </a>
+        <a href="{% url 'question-page' %}" class="btn btn-primary">
+            <i class="bi bi-play"></i> Take Test Again
+        </a>
+    </div>
+
+</div>
+
+{% endblock content %}

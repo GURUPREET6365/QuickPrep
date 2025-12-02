@@ -1,89 +1,87 @@
 {% extends "main.html" %}
 
-
-{% block title %}QuickPrep: Test Results - {{ file.name }}{% endblock title %}
-
+{% block title %}QuickPrep: Questions {% endblock title %}
 
 {% block extra_css %}
-  
-
-  
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/question_test_page.css' %}">
+<link rel="stylesheet" href="{% static 'css/question_test_page_analysis.css' %}">
 
 {% endblock extra_css %}
 
 {% block content %}
-
-<style>
-
-</style>
-
-<div class="results-container">
-    
-   
-    <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-box stat-correct">
-            <div class="stat-icon">✅</div>
-            <div class="stat-number">{{ correct_answers }}</div>
-            <div class="stat-label">Correct Answers</div>
-        </div>
-
-        <div class="stat-box stat-wrong">
-            <div class="stat-icon">❌</div>
-            <div class="stat-number">{{ incorrect_count }}</div>
-            <div class="stat-label">Wrong Answers</div>
-        </div>
-
-        <div class="stat-box stat-unanswered">
-            <div class="stat-icon">⏭️</div>
-            <div class="stat-number">{{ unanswered }}</div>
-            <div class="stat-label">Unanswered</div>
-        </div>
+<div class="questions-wrapper">
+  <div class="container">
+    <!-- Header -->
+    <div class="questions-header">
+      <div>
+        <h1 class="mb-2">📚 Practice Questions</h1>
+        <p class="text-muted mb-0">Test your knowledge with these questions</p>
+      </div>
     </div>
 
-    <!-- Review Section -->
-    <div class="review-section">
-        <h2 class="review-title">📝 Review Your Answers</h2>
+    <!-- Counter -->
+    {% if questions %}
+    <div class="questions-counter">
+      <span>Total Questions: <strong>{{ questions|length }}</strong></span>
+    </div>
+    {% endif %}
 
-        {% for response in responses %}
-            <div class="review-item">
+    <!-- Questions -->
+    {% if questions %}
+      {% for question in questions %}
+      <div class="question-card">
+        <!-- Question Header -->
+        <div class="question-header">
+          <div class="question-number">{{ forloop.counter }}</div>
+          <div class="question-text">{{ question.question_text|default:question }}</div>
+        </div>
 
-                <div class="answer-row">
-                    <span class="answer-label">Your Answer:</span>
-                    <span class="answer-value">
-                        {{ response.selected_answer }}
-                        {% if response.is_correct %}
-                            <span class="badge correct-badge">✓ Correct</span>
-                        {% else %}
-                            <span class="badge wrong-badge">✗ Wrong</span>
-                        {% endif %}
-                    </span>
-                </div>
-
-                {% if not response.is_correct %}
-                    <div class="answer-row" style="background: rgba(34, 197, 94, 0.05);">
-                        <span class="answer-label">Correct Answer:</span>
-                        <span class="answer-value" style="color: var(--success-color);">
-                            {{ response.question.answer }}
-                        </span>
-                    </div>
-                {% endif %}
+        <!-- Question Content -->
+        <div class="question-content">
+          {% if question.A %}
+            <div class="option">
+              <span class="option-label">A</span>
+              <span class="option-text">{{ question.A }}</span>
             </div>
-        {% endfor %}
-    </div>
+          {% endif %}
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <a href="{% url 'question-page' %}" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Back to Questions
-        </a>
-        <a href="{% url 'question-page' %}" class="btn btn-primary">
-            <i class="bi bi-play"></i> Take Test Again
-        </a>
-    </div>
+          {% if question.B %}
+            <div class="option">
+              <span class="option-label">B</span>
+              <span class="option-text">{{ question.B }}</span>
+            </div>
+          {% endif %}
 
+          {% if question.C %}
+            <div class="option">
+              <span class="option-label">C</span>
+              <span class="option-text">{{ question.C }}</span>
+            </div>
+          {% endif %}
+
+          {% if question.D %}
+            <div class="option">
+              <span class="option-label">D</span>
+              <span class="option-text">{{ question.D }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Action Buttons -->
+
+
+    {% else %}
+      <!-- Empty State -->
+      <div class="empty-state">
+        <div class="empty-state-icon">📋</div>
+        <h4 class="mb-2">No Questions Available</h4>
+        <p>Please upload a file or try again later.</p>
+        
+      </div>
+    {% endif %}
+
+  </div>
 </div>
-
 {% endblock content %}

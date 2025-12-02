@@ -106,5 +106,6 @@ def question_page(request):
 @login_required
 def Test_question(request, file_id, date):
     user = request.user
-    question = Questions.objects.filter(user=user, file_id = file_id, created_at = date)
-    return render(request, 'Test_Practise/question_test_page_analysis.html', {'questions':question})
+    questions = Questions.objects.filter(user=user, file_id = file_id, created_at = date)
+    
+    return render(request, 'Test_Practise/question_test_page_analysis.html', {'questions':questions,})

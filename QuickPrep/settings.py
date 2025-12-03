@@ -43,6 +43,24 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # This first check for the environment file that what is set on that and if find he set that if not find he set false.
 DEBUG = os.getenv("DEBUG", "False").lower() in ("1","true","t")
 
+# Security Settings (add this to settings.py)
+if not DEBUG:
+    # HTTPS/SSL
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # CSRF
+    CSRF_TRUSTED_ORIGINS = [
+        'https://quickprep-production.up.railway.app',
+        'https://*.railway.app',
+    ]
+    
+    # Headers
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
 
 
 

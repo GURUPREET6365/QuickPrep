@@ -41,7 +41,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 # This first check for the environment file that what is set on that and if find he set that if not find he set false.
-DEBUG = os.getenv("DEBUG", "False").lower() in ("1","true","t")
+DEBUG = False
 
 
 
